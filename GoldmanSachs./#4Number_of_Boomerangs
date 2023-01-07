@@ -1,0 +1,48 @@
+class Solution
+{
+public:
+    double dis(vector<int> &a, vector<int> &b)
+    {
+        return sqrt(pow(a[0] - b[0], 2) + pow(a[1] - b[1], 2));
+    }
+    int ncr(int n, int r)
+    {
+        double ans = 1.0;
+        r = min(r, n - r);
+        if (r == 0)
+            return n;
+        while (r)
+        {
+            ans = ans * (n / r);
+            n--;
+            r--;
+        }
+        return ans;
+    }
+    int numberOfBoomerangs(vector<vector<int>> &points)
+    {
+        int ans = 0;
+        int n = points.size();
+        for (int i = 0; i < n; i++)
+        {
+            unordered_map<double, int> m;
+            for (int j = 0; j < n; j++)
+            {
+                if (j != i)
+                    m[dis(points[i], points[j])]++;
+            }
+
+            for (auto it : m)
+            {
+                if (it.second == 1)
+                    continue;
+                int f = ncr(it.second, 2);
+                if (f == 2)
+                    ans += f;
+                else
+                    ans += 2 * f;
+            }
+        }
+        return ans;
+    }
+};
